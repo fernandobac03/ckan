@@ -1,4 +1,4 @@
-# docker build . -t ckan && docker run -d -p 80:5000 --link db:db --link redis:redis --link solr:solr ckan
+# docker build . -t ckan && docker run -d -p 80:80 --link db:db --link redis:redis --link solr:solr ckan
 
 FROM debian:jessie
 MAINTAINER Open Knowledge
@@ -9,12 +9,24 @@ ENV CKAN_STORAGE_PATH /var/lib/ckan
 ENV CKAN_SITE_URL http://localhost:5000
 
 # Install required packages
+RUN apt-get update
+
 RUN apt-get -q -y update && apt-get -q -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get -q -y install \
-		python-dev \
+        python-dev \
         python-pip \
         python-virtualenv \
         libpq-dev \
         git-core \
+        nginx \
+        apache2 \
+        libapache2-mod-rpaf \
+        libapache2-mod-wsgi \
+        nano \
+        build-essential \
+        libxslt1-dev \
+        libxml2-dev \
+        zlib1g-dev \
+        git \
 	&& apt-get -q clean
 
 # SetUp Virtual Environment CKAN
@@ -41,9 +53,18 @@ COPY ./contrib/docker/ckan-entrypoint.sh /
 RUN chmod +x /ckan-entrypoint.sh
 ENTRYPOINT ["/ckan-entrypoint.sh"]
 
+# Install and config DataPusher
+COPY ./ckanext/datapusher/install_datapusher.sh /
+RUN chmod +x /install_datapusher.sh
+RUN ./install_datapusher.sh
+COPY ./ckanext/datapusher/datapusher.conf /etc/apache2/sites-available/
+RUN service apache2 restart
+
 # Volumes
 VOLUME ["/etc/ckan/default"]
 VOLUME ["/var/lib/ckan"]
 EXPOSE 5000
+EXPOSE 8800
+
 
 CMD ["ckan-paster","serve","/etc/ckan/default/ckan.ini"]
