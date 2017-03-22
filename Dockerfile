@@ -48,23 +48,27 @@ ADD . $CKAN_HOME/src/ckan/
 RUN ckan-pip install -e $CKAN_HOME/src/ckan/
 RUN ln -s $CKAN_HOME/src/ckan/ckan/config/who.ini $CKAN_CONFIG/who.ini
 
-# SetUp EntryPoint
-COPY ./contrib/docker/ckan-entrypoint.sh /
-RUN chmod +x /ckan-entrypoint.sh
-ENTRYPOINT ["/ckan-entrypoint.sh"]
-
 # Install and config DataPusher
 COPY ./ckanext/datapusher/install_datapusher.sh /
 RUN chmod +x /install_datapusher.sh
 RUN ./install_datapusher.sh
 COPY ./ckanext/datapusher/datapusher.conf /etc/apache2/sites-available/
-RUN service apache2 restart
+
+# SetUp EntryPoint
+COPY ./contrib/docker/ckan-entrypoint.sh /
+RUN chmod +x /ckan-entrypoint.sh
+ENTRYPOINT ["/ckan-entrypoint.sh"]
 
 # Volumes
 VOLUME ["/etc/ckan/default"]
 VOLUME ["/var/lib/ckan"]
-EXPOSE 5000
-EXPOSE 8800
+EXPOSE 5000 8800
 
+# Starting Ckan and Services
+COPY /start_ckan.sh /
+RUN chmod +x /start_ckan.sh
+CMD ["/start_ckan.sh"]
 
-CMD ["ckan-paster","serve","/etc/ckan/default/ckan.ini"]
+#Deleting temporal files
+RUN rm ./install_datapusher.sh
+
