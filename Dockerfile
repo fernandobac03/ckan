@@ -21,7 +21,6 @@ RUN apt-get -q -y update && apt-get -q -y upgrade && DEBIAN_FRONTEND=noninteract
         apache2 \
         libapache2-mod-rpaf \
         libapache2-mod-wsgi \
-        nano \
         build-essential \
         libxslt1-dev \
         libxml2-dev \
@@ -48,11 +47,16 @@ ADD . $CKAN_HOME/src/ckan/
 RUN ckan-pip install -e $CKAN_HOME/src/ckan/
 RUN ln -s $CKAN_HOME/src/ckan/ckan/config/who.ini $CKAN_CONFIG/who.ini
 
-# Install and config DataPusher
+#*** OEG - Install and Config DataPusher - OEG ***#
 COPY ./ckanext/datapusher/install_datapusher.sh /
 RUN chmod +x /install_datapusher.sh
 RUN ./install_datapusher.sh
 COPY ./ckanext/datapusher/datapusher.conf /etc/apache2/sites-available/
+
+#*** OEG - Extensions - OEG ***#
+COPY ./inia/install_ext_inia.sh /
+RUN chmod +x /install_ext_inia.sh
+RUN ./install_ext_inia.sh
 
 # SetUp EntryPoint
 COPY ./contrib/docker/ckan-entrypoint.sh /
@@ -65,10 +69,10 @@ VOLUME ["/var/lib/ckan"]
 EXPOSE 5000 8800
 
 # Starting Ckan and Services
-COPY /start_ckan.sh /
+COPY /inia/start_ckan.sh /
 RUN chmod +x /start_ckan.sh
 CMD ["/start_ckan.sh"]
 
 #Deleting temporal files
 RUN rm ./install_datapusher.sh
-
+RUN rm ./install_ext_inia.sh
