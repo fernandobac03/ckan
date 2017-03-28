@@ -1,8 +1,7 @@
 #!/bin/bash
-
 set -e
 
-
+#installing basiccharts extension
 cd /usr/lib/ckan/default/src
 git clone https://github.com/ckan/ckanext-basiccharts.git
 source /usr/lib/ckan/default/bin/activate
