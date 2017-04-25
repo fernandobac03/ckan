@@ -102,7 +102,7 @@ ckan.site_id = default
 #       Add ``datapusher`` to enable DataPusher
 #		Add ``resource_proxy`` to enable resorce proxying and get around the
 #		same origin policy
-ckan.plugins = stats text_view image_view recline_view recline_grid_view datastore datapusher linechart barchart piechart basicgrid
+ckan.plugins = stats text_view image_view recline_view recline_grid_view datastore datapusher linechart barchart piechart basicgrid gallery scheming_datasets repeating
 
 # Define which views should be created by default
 # (plugins must be loaded in ckan.plugins)
@@ -167,6 +167,26 @@ ckan.datapusher.url = http://172.17.0.5:8800/
 #ckan.resource_proxy.max_file_size = 1048576
 # Size of chunks to read/write.
 #ckan.resource_proxy.chunk_size = 4096
+
+##  Squeming and Repeating Extensions  ##
+
+#   module-path:file to schemas being used
+#   scheming.dataset_schemas = ckanext.scheming:myschema.json
+#   
+#   will try to load "myschema.json" 
+#   as dataset schemas
+#
+#   URLs may also be used, e.g:
+#
+scheming.dataset_schemas = http://172.17.0.6:19000/esquemas/myschema.json
+
+#   Preset files may be included as well. The default preset setting is:
+scheming.presets =	ckanext.scheming:presets.json	
+			ckanext.repeating:presets.json
+
+#   The is_fallback setting may be changed as well. Defaults to false:
+scheming.dataset_fallback = false
+
 
 ## Activity Streams Settings
 
