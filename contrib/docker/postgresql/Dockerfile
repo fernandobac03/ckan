@@ -10,5 +10,4 @@ ENV POSTGRES_DB ckan
 COPY /initDataStore.sh /docker-entrypoint-initdb.d/
 COPY /set_permissions.sql /docker-entrypoint-initdb.d/
 
-RUN ls
 
