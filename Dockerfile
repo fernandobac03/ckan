@@ -13,6 +13,7 @@ RUN apt-get update
 
 RUN apt-get -q -y update && apt-get -q -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get -q -y install \
         python-dev \
+        python-shapely\
         python-pip \
         python-virtualenv \
         libpq-dev \
