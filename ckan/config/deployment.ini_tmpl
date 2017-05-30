@@ -47,7 +47,7 @@ who.log_file = %(cache_dir)s/who_log.ini
 # who.timeout = 86400
 
 ## Database Settings
-sqlalchemy.url = postgresql://ckan_default:pass@localhost/ckan_default
+#sqlalchemy.url = postgresql://ckan_default:pass@localhost/ckan_default
 
 ckan.datastore.write_url = postgresql://ckan:ckan@172.17.0.2:5432/datastore_default
 ckan.datastore.read_url = postgresql://datastore_default:ckan@172.17.0.2:5432/datastore_default
@@ -75,16 +75,18 @@ ckan.auth.create_user_via_web = true
 ckan.auth.roles_that_cascade_to_sub_groups = admin
 
 
+
 ## Search Settings
 
 ckan.site_id = default
-#solr_url = http://127.0.0.1:8983/solr
+#solr_url = http://172.17.0.3:8983/solr
+#ckan.search.show_all_types = False
 
 
 ## Redis Settings
 
 # URL to your Redis instance, including the database to be used.
-#ckan.redis.url = redis://localhost:6379/0
+#ckan.redis.url = redis://172.17.0.4:6379/0
 
 
 ## CORS Settings
@@ -102,7 +104,7 @@ ckan.site_id = default
 #       Add ``datapusher`` to enable DataPusher
 #		Add ``resource_proxy`` to enable resorce proxying and get around the
 #		same origin policy
-ckan.plugins = stats text_view image_view recline_view recline_grid_view datastore datapusher linechart barchart piechart basicgrid gallery scheming_datasets repeating
+ckan.plugins = stats text_view image_view recline_view recline_grid_view datastore datapusher linechart barchart piechart basicgrid gallery scheming_datasets repeating  predataset hierarchy_display hierarchy_form dcat dcat_json_interface
 
 # Define which views should be created by default
 # (plugins must be loaded in ckan.plugins)
@@ -171,14 +173,14 @@ ckan.datapusher.url = http://172.17.0.5:8800/
 ##  Squeming and Repeating Extensions  ##
 
 #   module-path:file to schemas being used
-#   scheming.dataset_schemas = ckanext.scheming:myschema.json
+scheming.dataset_schemas = ckanext.scheming:inia_schema.json
 #   
 #   will try to load "myschema.json" 
 #   as dataset schemas
 #
 #   URLs may also be used, e.g:
 #
-scheming.dataset_schemas = http://172.17.0.6:19000/esquemas/myschema.json
+#scheming.dataset_schemas = http://172.17.0.6:19000/esquemas/myschema.json
 
 #   Preset files may be included as well. The default preset setting is:
 scheming.presets =	ckanext.scheming:presets.json	

@@ -11,6 +11,7 @@ mkdir /usr/lib/ckan/datapusher/src
 cd /usr/lib/ckan/datapusher/src
 
 #clone the source (this should target the latest tagged version)
+ls
 git clone -b 0.0.10 https://github.com/ckan/datapusher.git
 
 #install the DataPusher and its requirements
