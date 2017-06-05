@@ -29,6 +29,8 @@ RUN apt-get -q -y update && apt-get -q -y upgrade && DEBIAN_FRONTEND=noninteract
         git \
 	&& apt-get -q clean
 
+RUN apt-get update
+
 # SetUp Virtual Environment CKAN
 RUN mkdir -p $CKAN_HOME $CKAN_CONFIG $CKAN_STORAGE_PATH
 RUN virtualenv $CKAN_HOME
@@ -58,6 +60,10 @@ COPY ./ckanext/datapusher/datapusher.conf /etc/apache2/sites-available/
 COPY ./inia/install_ext_inia.sh /
 RUN chmod +x /install_ext_inia.sh
 RUN ./install_ext_inia.sh
+
+#*** OEG - Install New requirements - OEG ***#
+ADD ./inia/inia-requirements.txt $CKAN_HOME/src/ckan/inia-requirements.txt
+RUN ckan-pip install --upgrade -r $CKAN_HOME/src/ckan/inia-requirements.txt
 
 # SetUp EntryPoint
 COPY ./contrib/docker/ckan-entrypoint.sh /

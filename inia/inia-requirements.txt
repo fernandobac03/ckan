@@ -1,0 +1,2 @@
+#this requirement because the default version 0.8.3 import urllib3 1.19 and request library needed urllib3 >1.20
+httpretty==0.8.14
